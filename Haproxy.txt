@@ -1,0 +1,39 @@
+/* Commands to install APACHE-1 And hosting a site in 1st machine */
+
+sudo su -
+yum install httpd -y
+service httpd start
+echo "Hello World" > /var/www/html/index.html
+cat /var/www/html/index.html
+hostname -I
+13.20.192.176
+
+
+/* Commands to install APACHE-2 And hosting a site in 2nd machine */
+
+sudo su -
+yum install httpd -y
+service httpd start
+echo "This is rahul." >/var/www/html/index.html
+cat /var/www/html/index.html
+hostname -I
+13.18.77.168
+
+
+/* Commands to install Haproxy And making the site Load balancing */
+
+sudo su -
+yum install haproxy -y
+service haproxy start
+vi /etc/haproxy/haproxy.cfg
+hostname -I
+curl 196.31.41.146
+
+
+/* added lines in haproxy.cfg to tell which machine to show */
+frontend  my-apache-face *:80
+            default_backend             my-apache
+backend my-apache
+        balance roundrobin
+        server  APACHE-1 13.20.192.176:80 check
+        server  APACHE-2 13.18.77.168:80 check
